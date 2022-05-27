@@ -105,7 +105,7 @@ The command adds the following packages to the pubsec.yml file
 ```yaml
 get_it: ^7.2.0
 logger: ^1.1.0
-stacked: ^2.6.3
+stacked: ^2.3.8
 stacked_services: ^0.8.24
 responsive_builder: ^0.4.2
 equatable: ^2.0.3
