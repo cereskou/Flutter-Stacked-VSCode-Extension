@@ -140,7 +140,9 @@ equatable: ^2.0.3
 ### Build
 
 1. Install vsce
+
    vsce (Visual Studio Code Extensions), a command-line tool for packaging, publishing and managing vs Code extenstions.
+
    Make sure you hava Node.js installed.
 
 ```
@@ -151,8 +153,9 @@ sudo npm install -g vsce
 
 ```
 $ cd Flutter-Stacked-VSCode-Extension
+$ npm intall
 $ vsce package
- DONE  Packaged: /Users/kou/workspace/github.com/Flutter-Stacked-VSCode-Extension/flutter-stacked-architecture-generator-1.0.4.vsix (1449 files, 32.47MB)
+ DONE  Packaged: flutter-stacked-architecture-generator-1.0.4.vsix (1449 files, 32.47MB)
 
 $ vsce publish
 # published to VS Code Markplace
