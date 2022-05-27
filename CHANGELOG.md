@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.0.4] - 2022-05-27
 
-- Upgrade dependencies (stacked 2.3.6)
+- Upgrade dependencies (stacked 2.3.8)
 - Support null safety
 
 ## [1.0.3] - 2020-10-07
