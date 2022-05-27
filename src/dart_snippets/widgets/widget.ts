@@ -1,25 +1,52 @@
-import * as _ from 'lodash';
-import { Base } from '../architecture/base';
-import { TYPE_OF_ARCHITECTURE, TYPE_OF_WIDGET } from '../../utils/utils';
+import * as _ from "lodash";
+import { Base } from "../architecture/base";
+import { TYPE_OF_ARCHITECTURE, TYPE_OF_WIDGET } from "../../utils/utils";
 
 export class Widget extends Base {
-
   private _dartString: string;
 
-  constructor(fileName: string, suffix: string, typeOfArchitecture: TYPE_OF_ARCHITECTURE, typeOfWidget: TYPE_OF_WIDGET) {
+  constructor(
+    fileName: string,
+    suffix: string,
+    typeOfArchitecture: TYPE_OF_ARCHITECTURE,
+    typeOfWidget: TYPE_OF_WIDGET
+  ) {
     super(fileName, suffix);
 
-    let classPrefixList: string[] = this.className.split('Widget');
+    let classPrefixList: string[] = this.className.split("Widget");
     let classPrefix: string | undefined;
-    if (!_.isEmpty(classPrefixList)) { classPrefix = _.first(classPrefixList); }
+    if (!_.isEmpty(classPrefixList)) {
+      classPrefix = _.first(classPrefixList);
+    }
 
-    if (typeOfArchitecture === TYPE_OF_ARCHITECTURE.Responsive && typeOfWidget === TYPE_OF_WIDGET.Smart) {
-      this._dartString = this.responsiveAndSmartWidgetDartString(fileName, classPrefix);
-    } else if (typeOfArchitecture === TYPE_OF_ARCHITECTURE.Responsive && typeOfWidget === TYPE_OF_WIDGET.Dumb) {
-      this._dartString = this.responsiveAndDumbWidgetDartString(fileName, classPrefix);
-    } else if (typeOfArchitecture === TYPE_OF_ARCHITECTURE.Mobile && typeOfWidget === TYPE_OF_WIDGET.Smart) {
-      this._dartString = this.mobileAndSmartWidgetDartString(fileName, classPrefix);
-    } else if (typeOfArchitecture === TYPE_OF_ARCHITECTURE.Mobile && typeOfWidget === TYPE_OF_WIDGET.Dumb) {
+    if (
+      typeOfArchitecture === TYPE_OF_ARCHITECTURE.Responsive &&
+      typeOfWidget === TYPE_OF_WIDGET.Smart
+    ) {
+      this._dartString = this.responsiveAndSmartWidgetDartString(
+        fileName,
+        classPrefix
+      );
+    } else if (
+      typeOfArchitecture === TYPE_OF_ARCHITECTURE.Responsive &&
+      typeOfWidget === TYPE_OF_WIDGET.Dumb
+    ) {
+      this._dartString = this.responsiveAndDumbWidgetDartString(
+        fileName,
+        classPrefix
+      );
+    } else if (
+      typeOfArchitecture === TYPE_OF_ARCHITECTURE.Mobile &&
+      typeOfWidget === TYPE_OF_WIDGET.Smart
+    ) {
+      this._dartString = this.mobileAndSmartWidgetDartString(
+        fileName,
+        classPrefix
+      );
+    } else if (
+      typeOfArchitecture === TYPE_OF_ARCHITECTURE.Mobile &&
+      typeOfWidget === TYPE_OF_WIDGET.Dumb
+    ) {
       this._dartString = this.mobileAndDumbWidgetDartString();
     } else {
       this._dartString = this.mobileAndDumbWidgetDartString();
@@ -34,9 +61,11 @@ export class Widget extends Base {
     return `import 'package:flutter/material.dart';
 
 class ${this.className} extends StatelessWidget {
+  const ${this.className}({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return const Center(
       child: Text('${this.className}'),
     );
   }
@@ -44,17 +73,22 @@ class ${this.className} extends StatelessWidget {
 `;
   }
 
-  private mobileAndSmartWidgetDartString(fileName: string, classPrefix?: string): string {
+  private mobileAndSmartWidgetDartString(
+    fileName: string,
+    classPrefix?: string
+  ): string {
     return `import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import '${fileName}_view_model.dart';
 
 class ${this.className} extends StatelessWidget {
+  const ${this.className}({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<${classPrefix}ViewModel>.reactive(
-      builder: (BuildContext context, ${classPrefix}ViewModel viewModel, Widget _) {
-        return Center(
+      builder: (BuildContext context, ${classPrefix}ViewModel viewModel, Widget? _) {
+        return const Center(
           child: Text('${classPrefix} View'),
         );
       },
@@ -65,7 +99,10 @@ class ${this.className} extends StatelessWidget {
 `;
   }
 
-  private responsiveAndDumbWidgetDartString(fileName: string, classPrefix?: string) {
+  private responsiveAndDumbWidgetDartString(
+    fileName: string,
+    classPrefix?: string
+  ) {
     return `library ${fileName}_widget;
 
 import 'package:responsive_builder/responsive_builder.dart';
@@ -76,6 +113,8 @@ part '${fileName}_tablet.dart';
 part '${fileName}_desktop.dart';
 
 class ${this.className} extends StatelessWidget {
+  const ${this.className}({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return ScreenTypeLayout(
@@ -88,7 +127,10 @@ class ${this.className} extends StatelessWidget {
 `;
   }
 
-  private responsiveAndSmartWidgetDartString(fileName: string, classPrefix?: string): string {
+  private responsiveAndSmartWidgetDartString(
+    fileName: string,
+    classPrefix?: string
+  ): string {
     return `library ${fileName}_widget;
 
 import 'package:responsive_builder/responsive_builder.dart';
@@ -101,10 +143,12 @@ part '${fileName}_tablet.dart';
 part '${fileName}_desktop.dart';
 
 class ${this.className} extends StatelessWidget {
+  const ${this.className}({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<${classPrefix}ViewModel>.reactive(
-      builder: (BuildContext context, ${classPrefix}ViewModel viewModel, Widget _) {
+      builder: (BuildContext context, ${classPrefix}ViewModel viewModel, Widget? _) {
         return ScreenTypeLayout(
           mobile: _${classPrefix}Mobile(),
           desktop: _${classPrefix}Desktop(),
@@ -117,5 +161,4 @@ class ${this.className} extends StatelessWidget {
 }
 `;
   }
-
 }

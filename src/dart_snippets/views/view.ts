@@ -1,24 +1,32 @@
-import * as _ from 'lodash';
-import { Base } from '../architecture/base';
-import { TYPE_OF_ARCHITECTURE } from '../../utils/utils';
+import * as _ from "lodash";
+import { Base } from "../architecture/base";
+import { TYPE_OF_ARCHITECTURE } from "../../utils/utils";
 
 export class View extends Base {
-
   private _dartString: string;
 
-  constructor(fileName: string, suffix: string, typeOfArchitecture: TYPE_OF_ARCHITECTURE) {
+  constructor(
+    fileName: string,
+    suffix: string,
+    typeOfArchitecture: TYPE_OF_ARCHITECTURE
+  ) {
     super(fileName, suffix);
 
-    let classPrefixList: string[] = this.className.split('View');
+    let classPrefixList: string[] = this.className.split("View");
     let classPrefix: string | undefined;
-    if (!_.isEmpty(classPrefixList)) { classPrefix = _.first(classPrefixList); }
+    if (!_.isEmpty(classPrefixList)) {
+      classPrefix = _.first(classPrefixList);
+    }
 
     switch (typeOfArchitecture) {
-      case TYPE_OF_ARCHITECTURE.Responsive: this._dartString = this.responsiveDartString(fileName, classPrefix);
+      case TYPE_OF_ARCHITECTURE.Responsive:
+        this._dartString = this.responsiveDartString(fileName, classPrefix);
         break;
-      case TYPE_OF_ARCHITECTURE.Mobile: this._dartString = this.mobileDartString(fileName, classPrefix);
+      case TYPE_OF_ARCHITECTURE.Mobile:
+        this._dartString = this.mobileDartString(fileName, classPrefix);
         break;
-      default: this._dartString = this.mobileDartString(fileName, classPrefix);
+      default:
+        this._dartString = this.mobileDartString(fileName, classPrefix);
         break;
     }
   }
@@ -33,13 +41,15 @@ import 'package:stacked/stacked.dart';
 import '${fileName}_view_model.dart';
           
 class ${classPrefix}View extends StatelessWidget {
+  const ${classPrefix}View({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<${classPrefix}ViewModel>.reactive(
-      builder: (BuildContext context, ${classPrefix}ViewModel viewModel, Widget _) {
+      builder: (BuildContext context, ${classPrefix}ViewModel viewModel, Widget? _) {
         return Scaffold(
           appBar: AppBar(),
-          body: Center(
+          body: const Center(
             child: Text('${classPrefix} View'),
           ),
         );
@@ -64,6 +74,8 @@ part '${fileName}_tablet.dart';
 part '${fileName}_desktop.dart';
 
 class ${this.className} extends StatelessWidget {
+  const ${this.className}({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<${classPrefix}ViewModel>.reactive(
@@ -71,7 +83,7 @@ class ${this.className} extends StatelessWidget {
       onModelReady: (viewModel) {
         // Do something once your viewModel is initialized
       },
-      builder: (BuildContext context, ${classPrefix}ViewModel viewModel, Widget child) {
+      builder: (BuildContext context, ${classPrefix}ViewModel viewModel, Widget? child) {
         return ScreenTypeLayout(
           mobile: _${classPrefix}Mobile(viewModel),
           desktop: _${classPrefix}Desktop(viewModel),

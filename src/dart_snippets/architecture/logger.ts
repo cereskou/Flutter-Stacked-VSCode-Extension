@@ -1,8 +1,7 @@
-import * as _ from 'lodash';
-import { Base } from './base';
+import * as _ from "lodash";
+import { Base } from "./base";
 
 export class Logger extends Base {
-
   private _dartString: string;
 
   constructor(fileName: string, suffix?: string) {
@@ -29,12 +28,12 @@ class SimpleLogPrinter extends LogPrinter {
   @override
   List<String> log(LogEvent event) {
     String message = event.message;
-    AnsiColor color = levelColors[event.level];
+    AnsiColor? color = levelColors[event.level];
     String className = this.className;
     SimpleLogPrinter.counter += 1;
     int sequenceNumber = SimpleLogPrinter.counter;
 
-    return [color('$sequenceNumber. [$className]: $message')];
+    return [color!('$sequenceNumber. [$className]: $message')];
   }
 }
 

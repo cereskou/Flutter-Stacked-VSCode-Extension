@@ -1,8 +1,7 @@
-import * as _ from 'lodash';
-import { Base } from '../architecture/base';
+import * as _ from "lodash";
+import { Base } from "../architecture/base";
 
 export class Tablet extends Base {
-
   private _dartString: string;
 
   constructor(fileName: string, suffix: string) {
@@ -13,7 +12,7 @@ export class Tablet extends Base {
 class _${this.className} extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return const Center(
       child: Text('${fileName}_tablet'),
     );
   }

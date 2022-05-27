@@ -1,8 +1,7 @@
-import * as _ from 'lodash';
-import { Base } from './base';
+import * as _ from "lodash";
+import { Base } from "./base";
 
 export class BaseService extends Base {
-
   private _dartString: string;
 
   constructor(fileName: string, suffix?: string) {
@@ -13,9 +12,9 @@ export class BaseService extends Base {
 import '../logger.dart';
 
 class BaseService {
-  Logger log;
-  BaseService({String title}) {
-    log = getLogger(title ?? this.runtimeType.toString());
+  late Logger log;
+  BaseService({String? title}) {
+    log = getLogger(title ?? runtimeType.toString());
   }
 }    
 `;

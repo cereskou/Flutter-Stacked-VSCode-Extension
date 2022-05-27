@@ -1,51 +1,56 @@
-import * as yaml from 'js-yaml';
-import { VsCodeActions } from './vs_code_actions';
-import { FileSystemManager } from './file_system_manager';
-import * as _ from 'lodash';
+import * as yaml from "js-yaml";
+import { VsCodeActions } from "./vs_code_actions";
+import { FileSystemManager } from "./file_system_manager";
+import * as _ from "lodash";
 
 export class YamlHelper {
-
   public static initializeWithDependencies() {
     this.upgradeDartVersion();
-    this.addDependencyToPubspec('get_it', '4.0.4');
-    this.addDependencyToPubspec('logger', '0.9.2');
-    this.addDependencyToPubspec('stacked', '1.7.6');
-    this.addDependencyToPubspec('stacked_services', '0.5.4+2');
-    this.addDependencyToPubspec('responsive_builder', '0.2.0+2');
-    this.addDependencyToPubspec('equatable', '1.2.4');
+    this.addDependencyToPubspec("get_it", "7.2.0");
+    this.addDependencyToPubspec("logger", "1.1.0");
+    this.addDependencyToPubspec("stacked", "2.3.6");
+    this.addDependencyToPubspec("stacked_services", "0.8.24");
+    this.addDependencyToPubspec("responsive_builder", "0.4.2");
+    this.addDependencyToPubspec("equatable", "2.0.3");
     this.addAssetComment();
   }
 
   public static isValidFlutterPubspec(): string | undefined {
     let json = this.getPubspecJsonFile();
-    if (json === undefined) { return 'Invalid Pubspec format'; }
+    if (json === undefined) {
+      return "Invalid Pubspec format";
+    }
     let object = JSON.parse(json);
 
-    if (object['environment'] === undefined) {
-      return 'No environment definition found';
+    if (object["environment"] === undefined) {
+      return "No environment definition found";
     }
-    if (object['dependencies'] === undefined) {
-      return 'Definition for dependencies not found';
+    if (object["dependencies"] === undefined) {
+      return "Definition for dependencies not found";
     }
-    if (object['dependencies']['flutter'] === undefined) {
-      return 'Definition for FLutter in dependencies not found';
+    if (object["dependencies"]["flutter"] === undefined) {
+      return "Definition for FLutter in dependencies not found";
     }
     return undefined;
   }
 
   public static getProjectName(): string | undefined {
     let json = this.getPubspecJsonFile();
-    if (json === undefined) { return undefined; }
+    if (json === undefined) {
+      return undefined;
+    }
     let object = JSON.parse(json);
 
-    return object['name'];
+    return object["name"];
   }
 
   private static addDependencyToPubspec(module: string, version?: string) {
     let json = this.getPubspecJsonFile();
-    if (json === undefined) { return; }
+    if (json === undefined) {
+      return;
+    }
     let object = JSON.parse(json);
-    object['dependencies'][module] = `^${version}`;
+    object["dependencies"][module] = `^${version}`;
     let modifiedString = JSON.stringify(object);
     // console.debug(`addDependencyToPubspec: modifiledString: ${modifiedString}`);
     let updatedYaml = this.toYAML(modifiedString);
@@ -57,9 +62,11 @@ export class YamlHelper {
 
   private static upgradeDartVersion() {
     let json = this.getPubspecJsonFile();
-    if (json === undefined) { return; }
+    if (json === undefined) {
+      return;
+    }
     let object = JSON.parse(json);
-    object['environment']['sdk'] = '>=2.3.0 <3.0.0';
+    object["environment"]["sdk"] = ">=2.17.1 <3.0.0";
     let modifiedString = JSON.stringify(object);
     console.debug(`upgradeDartVersion: modifiledString: ${modifiedString}`);
     let updatedYaml = this.toYAML(modifiedString);
@@ -71,7 +78,9 @@ export class YamlHelper {
 
   private static addAssetComment() {
     let json = this.getPubspecJsonFile();
-    if (json === undefined) { return; }
+    if (json === undefined) {
+      return;
+    }
     let object = JSON.parse(json);
     let modifiedString = JSON.stringify(object);
     let updatedYaml = this.toYAML(modifiedString);
@@ -114,9 +123,9 @@ export class YamlHelper {
 
   private static getPubspecJsonFile(): string | undefined {
     let rootPath = VsCodeActions.rootPath;
-    let fileData = FileSystemManager.readFileAsString(rootPath, 'pubspec.yaml');
+    let fileData = FileSystemManager.readFileAsString(rootPath, "pubspec.yaml");
     if (fileData === undefined) {
-      console.debug('Pubspec.yaml not found');
+      console.debug("Pubspec.yaml not found");
       return undefined;
     }
     let data = YamlHelper.toJSON(fileData);
@@ -124,7 +133,7 @@ export class YamlHelper {
   }
 
   private static overwritePubspecFile(data: string) {
-    FileSystemManager.createFile(VsCodeActions.rootPath, 'pubspec.yaml', data);
+    FileSystemManager.createFile(VsCodeActions.rootPath, "pubspec.yaml", data);
   }
 
   private static toYAML(text: string): string | undefined {
@@ -133,20 +142,20 @@ export class YamlHelper {
       // console.debug(`toYAML: ${text}`);
       json = JSON.parse(text);
     } catch (e) {
-      VsCodeActions.showErrorMessage('Could not parse the selection as JSON.');
+      VsCodeActions.showErrorMessage("Could not parse the selection as JSON.");
       console.error(e);
       return undefined;
     }
-    return yaml.safeDump(json, { indent: this.getIndent() });
+    return yaml.dump(json, { indent: this.getIndent() });
   }
 
   private static toJSON(text: string) {
     let json;
     try {
       // console.debug(`toJSON: ${text}`);
-      json = yaml.safeLoad(text, { schema: yaml.JSON_SCHEMA });
+      json = yaml.load(text, { schema: yaml.JSON_SCHEMA });
     } catch (e) {
-      VsCodeActions.showErrorMessage('Could not parse the selection as YAML.');
+      VsCodeActions.showErrorMessage("Could not parse the selection as YAML.");
       console.error(e);
       return;
     }
@@ -155,9 +164,9 @@ export class YamlHelper {
 
   private static getIndent(): number {
     const editorCfg = VsCodeActions.getEditorConfiguration();
-    if (editorCfg && editorCfg.get('insertSpaces')) {
-      const tabSize = editorCfg.get('tabSize');
-      if (tabSize && typeof tabSize === 'number') {
+    if (editorCfg && editorCfg.get("insertSpaces")) {
+      const tabSize = editorCfg.get("tabSize");
+      if (tabSize && typeof tabSize === "number") {
         return tabSize;
       }
     }
