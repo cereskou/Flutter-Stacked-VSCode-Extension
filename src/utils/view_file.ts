@@ -1,22 +1,36 @@
-import * as path from 'path';
-import * as _ from 'lodash';
-import { existsSync } from 'fs';
-import { FileSystemManager } from './file_system_manager';
-import { YamlHelper } from './yaml_helper';
-import { TYPE_OF_ARCHITECTURE, TYPE_OF_VIEWMODEL } from './utils';
-import { View } from '../dart_snippets/views/view';
-import { Mobile } from '../dart_snippets/views/mobile';
-import { Tablet } from '../dart_snippets/views/tablet';
-import { Desktop } from '../dart_snippets/views/desktop';
-import { ViewModel } from '../dart_snippets/views/view_model';
-import { RouterJSON } from './router_json';
+import * as path from "path";
+import * as _ from "lodash";
+import { existsSync } from "fs";
+import { FileSystemManager } from "./file_system_manager";
+import { YamlHelper } from "./yaml_helper";
+import {
+  TYPE_OF_ARCHITECTURE,
+  TYPE_OF_ROUTE,
+  TYPE_OF_VIEWMODEL,
+  Utils,
+} from "./utils";
+import { View } from "../dart_snippets/views/view";
+import { Mobile } from "../dart_snippets/views/mobile";
+import { Tablet } from "../dart_snippets/views/tablet";
+import { Desktop } from "../dart_snippets/views/desktop";
+import { ViewModel } from "../dart_snippets/views/view_model";
+import { RouterJSON } from "./router_json";
+import { utils } from "mocha";
 
 export class ViewFile {
-
-  constructor(private rootPath: string, private fileName: string, private typeOfArchitecture: TYPE_OF_ARCHITECTURE, private typeOfViewModel: TYPE_OF_VIEWMODEL, private folders?: string[]) {
+  constructor(
+    private rootPath: string,
+    private fileName: string,
+    private typeOfArchitecture: TYPE_OF_ARCHITECTURE,
+    private typeOfViewModel: TYPE_OF_VIEWMODEL,
+    private typeOfRoute?: TYPE_OF_ROUTE,
+    private folders?: string[]
+  ) {
     console.debug(`ViewFile(rootPath: ${rootPath}, fileName: ${fileName})`);
     let folderCreated = FileSystemManager.createFolder(this.pathValue);
-    if (!folderCreated) { return; }
+    if (!folderCreated) {
+      return;
+    }
   }
 
   public createViews() {
@@ -31,21 +45,55 @@ export class ViewFile {
         this.createMobileViews();
         break;
     }
-    
-    new RouterJSON(this.fileName, this.folders).addRoute();
+    let typeRoute = Utils.convertRouteFromEnum(this.typeOfRoute);
+
+    new RouterJSON(this.fileName, typeRoute, this.folders).addRoute();
   }
 
   private createMobileViews() {
-    this.createFiles(`${this.snakeCasedFileName}_view.dart`, new View(this.snakeCasedFileName, 'View', TYPE_OF_ARCHITECTURE.Mobile).dartString);
-    this.createFiles(`${this.snakeCasedFileName}_view_model.dart`, new ViewModel(this.snakeCasedFileName, 'ViewModel', this.typeOfViewModel, YamlHelper.getProjectName()).dartString);
+    this.createFiles(
+      `${this.snakeCasedFileName}_view.dart`,
+      new View(this.snakeCasedFileName, "View", TYPE_OF_ARCHITECTURE.Mobile)
+        .dartString
+    );
+    this.createFiles(
+      `${this.snakeCasedFileName}_view_model.dart`,
+      new ViewModel(
+        this.snakeCasedFileName,
+        "ViewModel",
+        this.typeOfViewModel,
+        YamlHelper.getProjectName()
+      ).dartString
+    );
   }
 
   private createResponsiveViews() {
-    this.createFiles(`${this.snakeCasedFileName}_view.dart`, new View(this.snakeCasedFileName, 'View', TYPE_OF_ARCHITECTURE.Responsive).dartString);
-    this.createFiles(`${this.snakeCasedFileName}_mobile.dart`, new Mobile(this.snakeCasedFileName, 'Mobile').dartString);
-    this.createFiles(`${this.snakeCasedFileName}_desktop.dart`, new Desktop(this.snakeCasedFileName, 'Desktop').dartString);
-    this.createFiles(`${this.snakeCasedFileName}_tablet.dart`, new Tablet(this.snakeCasedFileName, 'Tablet').dartString);
-    this.createFiles(`${this.snakeCasedFileName}_view_model.dart`, new ViewModel(this.snakeCasedFileName, 'ViewModel', this.typeOfViewModel, YamlHelper.getProjectName()).dartString);
+    this.createFiles(
+      `${this.snakeCasedFileName}_view.dart`,
+      new View(this.snakeCasedFileName, "View", TYPE_OF_ARCHITECTURE.Responsive)
+        .dartString
+    );
+    this.createFiles(
+      `${this.snakeCasedFileName}_mobile.dart`,
+      new Mobile(this.snakeCasedFileName, "Mobile").dartString
+    );
+    this.createFiles(
+      `${this.snakeCasedFileName}_desktop.dart`,
+      new Desktop(this.snakeCasedFileName, "Desktop").dartString
+    );
+    this.createFiles(
+      `${this.snakeCasedFileName}_tablet.dart`,
+      new Tablet(this.snakeCasedFileName, "Tablet").dartString
+    );
+    this.createFiles(
+      `${this.snakeCasedFileName}_view_model.dart`,
+      new ViewModel(
+        this.snakeCasedFileName,
+        "ViewModel",
+        this.typeOfViewModel,
+        YamlHelper.getProjectName()
+      ).dartString
+    );
   }
 
   private get snakeCasedFileName(): string {
@@ -55,14 +103,15 @@ export class ViewFile {
 
   private get pathValue(): string {
     if (this.folders === undefined) {
-      return path.join(
-        this.rootPath,
-        'lib',
-        'views',
-        this.snakeCasedFileName
-      );
+      return path.join(this.rootPath, "lib", "views", this.snakeCasedFileName);
     }
-    return path.join(this.rootPath, 'lib', 'views', ...this.folders, this.snakeCasedFileName);
+    return path.join(
+      this.rootPath,
+      "lib",
+      "views",
+      ...this.folders,
+      this.snakeCasedFileName
+    );
   }
 
   private createFiles(fileName: string, data: string) {

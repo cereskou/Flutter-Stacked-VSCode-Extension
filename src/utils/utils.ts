@@ -1,11 +1,23 @@
-import * as vscode from 'vscode';
-import _ = require('lodash');
+import * as vscode from "vscode";
+import _ = require("lodash");
 
 export class Utils {
-  public static readonly ARCHITECTURE = 'Architecture';
-  public static readonly TYPE_OF_ARCHITECTURE = ['Responsive', 'Mobile'];
-  public static readonly TYPE_OF_VIEWMODEL = ['BaseViewModel', 'FutureViewModel', 'StreamViewModel', 'MultipleFutureViewModel', 'MultipleStreamViewModel', 'ReactiveViewModel', 'IndexTrackingViewModel'];
-  public static readonly TYPE_OF_WIDGET = ['Smart Widget', 'Dumb Widget'];
+  public static readonly ARCHITECTURE = "Architecture";
+  public static readonly TYPE_OF_ARCHITECTURE = ["Responsive", "Mobile"];
+  public static readonly TYPE_OF_VIEWMODEL = [
+    "BaseViewModel",
+    "FutureViewModel",
+    "StreamViewModel",
+    "MultipleFutureViewModel",
+    "MultipleStreamViewModel",
+    "ReactiveViewModel",
+    "IndexTrackingViewModel",
+  ];
+  public static readonly TYPE_OF_WIDGET = ["Smart Widget", "Dumb Widget"];
+  public static readonly TYPE_OF_ROUTE = [
+    "MaterialPageRoute",
+    "CustomPageRoute",
+  ];
 
   public static isValidClassName(className: string): string | undefined {
     if (className.length === 0) {
@@ -39,7 +51,6 @@ export class Utils {
   }
 
   public static processFileName(fileName: string): string {
-
     if (fileName.length < 4) {
       return fileName;
     }
@@ -53,8 +64,6 @@ export class Utils {
       .substring(fileName.length - 6, fileName.length)
       .toLowerCase();
 
-
-
     if (viewFileName === "view") {
       let truncatedFileName = fileName.substring(0, fileName.length - 4);
       return truncatedFileName.trim();
@@ -62,39 +71,84 @@ export class Utils {
 
     if (widgetFileName === "widget") {
       let truncatedFileName = fileName.substring(0, fileName.length - 6);
-      console.debug('Widget testing');
+      console.debug("Widget testing");
       return truncatedFileName.trim();
     }
 
     return fileName.trim();
   }
 
-  public static convertResponsiveToEnum(architectureType?: string): TYPE_OF_ARCHITECTURE {
+  public static convertResponsiveToEnum(
+    architectureType?: string
+  ): TYPE_OF_ARCHITECTURE {
     switch (architectureType) {
-      case 'Mobile': return TYPE_OF_ARCHITECTURE.Mobile;
-      case 'Responsive': return TYPE_OF_ARCHITECTURE.Responsive;
-      default: return TYPE_OF_ARCHITECTURE.Mobile;
+      case "Mobile":
+        return TYPE_OF_ARCHITECTURE.Mobile;
+      case "Responsive":
+        return TYPE_OF_ARCHITECTURE.Responsive;
+      default:
+        return TYPE_OF_ARCHITECTURE.Mobile;
     }
   }
 
-  public static convertViewModelToEnum(viewModelType?: string): TYPE_OF_VIEWMODEL | undefined {
+  public static convertRouteFromEnum(
+    routeType?: TYPE_OF_ROUTE
+  ): string | undefined {
+    switch (routeType) {
+      case TYPE_OF_ROUTE.MaterialPageRoute:
+        return "MaterialPageRoute";
+      case TYPE_OF_ROUTE.CustomPageRoute:
+        return "CustomPageRoute";
+    }
+    return undefined;
+  }
+
+  public static convertRouteToEnum(
+    routeType?: string
+  ): TYPE_OF_ROUTE | undefined {
+    switch (routeType) {
+      case "MaterialPageRoute":
+        return TYPE_OF_ROUTE.MaterialPageRoute;
+      case "CustomPageRoute":
+        return TYPE_OF_ROUTE.CustomPageRoute;
+      default:
+        return TYPE_OF_ROUTE.MaterialPageRoute;
+    }
+  }
+
+  public static convertViewModelToEnum(
+    viewModelType?: string
+  ): TYPE_OF_VIEWMODEL | undefined {
     switch (viewModelType) {
-      case 'BaseViewModel': return TYPE_OF_VIEWMODEL.BaseViewModel;
-      case 'FutureViewModel': return TYPE_OF_VIEWMODEL.FutureViewModel;
-      case 'StreamViewModel': return TYPE_OF_VIEWMODEL.StreamViewModel;
-      case 'MultipleFutureViewModel': return TYPE_OF_VIEWMODEL.MultipleFutureViewModel;
-      case 'MultipleStreamViewModel': return TYPE_OF_VIEWMODEL.MultipleStreamViewModel;
-      case 'ReactiveViewModel': return TYPE_OF_VIEWMODEL.ReactiveViewModel;
-      case 'IndexTrackingViewModel': return TYPE_OF_VIEWMODEL.IndexTrackingViewModel;
-      default: return undefined;
+      case "BaseViewModel":
+        return TYPE_OF_VIEWMODEL.BaseViewModel;
+      case "FutureViewModel":
+        return TYPE_OF_VIEWMODEL.FutureViewModel;
+      case "StreamViewModel":
+        return TYPE_OF_VIEWMODEL.StreamViewModel;
+      case "MultipleFutureViewModel":
+        return TYPE_OF_VIEWMODEL.MultipleFutureViewModel;
+      case "MultipleStreamViewModel":
+        return TYPE_OF_VIEWMODEL.MultipleStreamViewModel;
+      case "ReactiveViewModel":
+        return TYPE_OF_VIEWMODEL.ReactiveViewModel;
+      case "IndexTrackingViewModel":
+        return TYPE_OF_VIEWMODEL.IndexTrackingViewModel;
+      default:
+        return undefined;
     }
   }
 
-  public static convertWidgetToEnum(widgetTpye?: string): TYPE_OF_WIDGET | undefined {
-    switch(widgetTpye) {
-      case 'Smart Widget': return TYPE_OF_WIDGET.Smart;
-      case 'Dumb Widget': return TYPE_OF_WIDGET.Dumb;
-      default: return undefined;
+  public static convertWidgetToEnum(
+    widgetTpye?: string
+  ): TYPE_OF_WIDGET | undefined {
+    switch (widgetTpye) {
+      case "Smart Widget":
+        return TYPE_OF_WIDGET.Smart;
+      case "Dumb Widget":
+        return TYPE_OF_WIDGET.Dumb;
+      default:
+        return undefined;
     }
   }
 }
@@ -116,5 +170,10 @@ export enum TYPE_OF_VIEWMODEL {
 
 export enum TYPE_OF_WIDGET {
   Smart,
-  Dumb
+  Dumb,
+}
+
+export enum TYPE_OF_ROUTE {
+  MaterialPageRoute,
+  CustomPageRoute,
 }
