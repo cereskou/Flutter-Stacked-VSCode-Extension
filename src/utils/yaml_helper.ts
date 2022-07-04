@@ -8,8 +8,8 @@ export class YamlHelper {
     this.upgradeDartVersion();
     this.addDependencyToPubspec("get_it", "7.2.0");
     this.addDependencyToPubspec("logger", "1.1.0");
-    this.addDependencyToPubspec("stacked", "2.3.8");
-    this.addDependencyToPubspec("stacked_services", "0.8.24");
+    this.addDependencyToPubspec("stacked", "2.3.12");
+    this.addDependencyToPubspec("stacked_services", "0.9.1");
     this.addDependencyToPubspec("responsive_builder", "0.4.2");
     this.addDependencyToPubspec("equatable", "2.0.3");
     this.addAssetComment();
