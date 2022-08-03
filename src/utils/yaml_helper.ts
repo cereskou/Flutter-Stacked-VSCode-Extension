@@ -8,8 +8,8 @@ export class YamlHelper {
     this.upgradeDartVersion();
     this.addDependencyToPubspec("get_it", "7.2.0");
     this.addDependencyToPubspec("logger", "1.1.0");
-    this.addDependencyToPubspec("stacked", "2.3.12");
-    this.addDependencyToPubspec("stacked_services", "0.9.1");
+    this.addDependencyToPubspec("stacked", "2.3.15");
+    this.addDependencyToPubspec("stacked_services", "0.9.3");
     this.addDependencyToPubspec("responsive_builder", "0.4.2");
     this.addDependencyToPubspec("equatable", "2.0.3");
     this.addAssetComment();
@@ -66,7 +66,7 @@ export class YamlHelper {
       return;
     }
     let object = JSON.parse(json);
-    object["environment"]["sdk"] = ">=2.17.1 <3.0.0";
+    object["environment"]["sdk"] = ">=2.17.5 <3.0.0";
     let modifiedString = JSON.stringify(object);
     console.debug(`upgradeDartVersion: modifiledString: ${modifiedString}`);
     let updatedYaml = this.toYAML(modifiedString);
