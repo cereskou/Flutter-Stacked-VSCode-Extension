@@ -269,20 +269,19 @@ export function activate(context: vscode.ExtensionContext) {
   async function inputTypeOfArchitecture(): Promise<
     TYPE_OF_ARCHITECTURE | undefined
   > {
-    let typeOfArchitecturePreference = ConfigJSON.readTypeOfArchitecture();
+    let typeOfArchitecturePreference = undefined;
 
-    if (typeOfArchitecturePreference === undefined) {
-      let typeOfArch = await VsCodeActions.getInputDropdown(
-        Utils.TYPE_OF_ARCHITECTURE
-      );
-      if (typeOfArch === undefined) {
-        console.warn("undefined");
-        VsCodeActions.showErrorMessage("Type of Architecture not selected");
-        return;
-      }
-      ConfigJSON.updateTypeOfArchitecture(typeOfArch);
-      typeOfArchitecturePreference = typeOfArch;
+    let typeOfArch = await VsCodeActions.getInputDropdown(
+      Utils.TYPE_OF_ARCHITECTURE
+    );
+    if (typeOfArch === undefined) {
+      console.warn("undefined");
+      VsCodeActions.showErrorMessage("Type of Architecture not selected");
+      return;
     }
+    ConfigJSON.updateTypeOfArchitecture(typeOfArch);
+    typeOfArchitecturePreference = typeOfArch;
+
     return Utils.convertResponsiveToEnum(typeOfArchitecturePreference);
   }
 

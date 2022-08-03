@@ -87,7 +87,7 @@ class ${this.className} extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<${classPrefix}ViewModel>.reactive(
-      builder: (BuildContext context, ${classPrefix}ViewModel viewModel, Widget? _) {
+      builder: (BuildContext context, ${classPrefix}ViewModel model, Widget? _) {
         return const Center(
           child: Text('${classPrefix} View'),
         );
@@ -148,7 +148,7 @@ class ${this.className} extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<${classPrefix}ViewModel>.reactive(
-      builder: (BuildContext context, ${classPrefix}ViewModel viewModel, Widget? _) {
+      builder: (BuildContext context, ${classPrefix}ViewModel model, Widget? _) {
         return ScreenTypeLayout(
           mobile: _${classPrefix}Mobile(),
           desktop: _${classPrefix}Desktop(),

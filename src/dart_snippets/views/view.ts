@@ -46,7 +46,7 @@ class ${classPrefix}View extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<${classPrefix}ViewModel>.reactive(
-      builder: (BuildContext context, ${classPrefix}ViewModel viewModel, Widget? _) {
+      builder: (BuildContext context, ${classPrefix}ViewModel model, Widget? _) {
         return Scaffold(
           appBar: AppBar(),
           body: const Center(
@@ -80,14 +80,14 @@ class ${this.className} extends StatelessWidget {
   Widget build(BuildContext context) {
     return ViewModelBuilder<${classPrefix}ViewModel>.reactive(
       viewModelBuilder: () => ${classPrefix}ViewModel(),
-      onModelReady: (viewModel) {
+      onModelReady: (model) {
         // Do something once your viewModel is initialized
       },
-      builder: (BuildContext context, ${classPrefix}ViewModel viewModel, Widget? child) {
+      builder: (BuildContext context, ${classPrefix}ViewModel model, Widget? child) {
         return ScreenTypeLayout(
-          mobile: _${classPrefix}Mobile(viewModel),
-          desktop: _${classPrefix}Desktop(viewModel),
-          tablet: _${classPrefix}Tablet(viewModel),  
+          mobile: _${classPrefix}Mobile(model),
+          desktop: _${classPrefix}Desktop(model),
+          tablet: _${classPrefix}Tablet(model),  
         );
       }
     );

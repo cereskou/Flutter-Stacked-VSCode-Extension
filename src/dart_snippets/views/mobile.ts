@@ -16,9 +16,9 @@ export class Mobile extends Base {
     this._dartString = `part of ${fileName}_view;
 
 class _${this.className} extends StatelessWidget {
-  final ${classPrefix}ViewModel viewModel;
+  final ${classPrefix}ViewModel model;
 
-  const _${this.className} (this.viewModel);
+  const _${this.className} (this.model);
 
   @override
   Widget build(BuildContext context) {

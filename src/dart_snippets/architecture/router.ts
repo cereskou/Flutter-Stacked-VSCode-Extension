@@ -66,14 +66,33 @@ import '${this.initialPath}/core/router_constants.dart';\n`;
     FileSystemManager.createFile(json_path, "router.dart", this._dartString);
     if (this._customRoute) {
       let _customString = `import 'package:flutter/material.dart';
+import 'router.dart' as router;
 
+typedef ValueCallback = void Function(dynamic);
+      
 class CustomPageRoute extends MaterialPageRoute {
   CustomPageRoute({builder, settings})
       : super(builder: builder, settings: settings);
 
   @override
   Duration get transitionDuration => Duration.zero;
-}`;
+}
+
+class CustomRouter {
+  static void push(BuildContext context, String name,
+      {Object? arguments, ValueCallback? finished}) {
+    Navigator.push(
+      context,
+      router.Router.generateRoute(
+          RouteSettings(name: name, arguments: arguments)),
+    ).then((value) {
+      if (finished != null) finished(value);
+    }, onError: (e) {
+      throw e;
+    });
+  }
+}
+`;
       FileSystemManager.createFile(
         json_path,
         "router_custom.dart",
